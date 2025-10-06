@@ -21,9 +21,9 @@
 
 <p>Demo accounts:</p>
 <ul>
-    <li>Admin: username="admin", password="password123"</li>
-    <li>Warehouse: username="warehouse", password="password123"</li>
-    <li>Customer: username="customer1", password="password123"</li>
+    <li>Admin: username="admin", password="admin"</li>
+    <li>Warehouse: username="warehouse", password="warehouse"</li>
+    <li>Customer: username="customer", password="customer"</li>
 </ul>
 
 <%@ include file="footer.jsp" %>
