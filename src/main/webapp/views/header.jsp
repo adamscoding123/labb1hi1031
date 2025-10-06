@@ -23,7 +23,7 @@
     <nav class="navbar">
         <a href="${pageContext.request.contextPath}/products">Products</a>
         <c:if test="${not empty sessionScope.user}">
-            <a href="${pageContext.request.contextPath}/cart">Cart (${sessionScope.cartCount})"</a>
+            <a href="${pageContext.request.contextPath}/cart">Cart ${sessionScope.cartCount}</a>
             <a href="${pageContext.request.contextPath}/orders">Orders</a>
             <c:if test="${sessionScope.user.admin}">
                 <a href="${pageContext.request.contextPath}/admin">Admin</a>
