@@ -2,8 +2,11 @@ package com.webshop.controller;
 
 import com.webshop.model.Product;
 import com.webshop.model.User;
+import com.webshop.model.Category;
 import com.webshop.service.ProductService;
 import com.webshop.service.UserService;
+import com.webshop.service.CategoryService;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,14 +21,17 @@ import java.util.List;
 public class AdminController extends HttpServlet {
     private final ProductService productService;
     private final UserService userService;
+    private final CategoryService categoryService;
 
     public AdminController() {
         this.productService = new ProductService();
         this.userService = new UserService();
+        this.categoryService = new CategoryService();
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
@@ -36,14 +42,17 @@ public class AdminController extends HttpServlet {
 
         List<Product> products = productService.getAllProducts();
         List<User> users = userService.getAllUsers();
+        List<Category> categories = categoryService.getAllCategories();
 
         request.setAttribute("products", products);
         request.setAttribute("users", users);
+        request.setAttribute("categories", categories); // pass categories to JSP
         request.getRequestDispatcher("/views/admin.jsp").forward(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
@@ -59,7 +68,24 @@ public class AdminController extends HttpServlet {
             String description = request.getParameter("description");
             BigDecimal price = new BigDecimal(request.getParameter("price"));
             int stockQuantity = Integer.parseInt(request.getParameter("stockQuantity"));
-            int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+
+            String categoryIdStr = request.getParameter("categoryId");
+            int categoryId;
+
+            // Handle new category creation
+            if ("new".equals(categoryIdStr)) {
+                String newCategoryName = request.getParameter("newCategoryName");
+                Category newCategory = categoryService.createCategory(newCategoryName);
+                if (newCategory != null) {
+                    categoryId = newCategory.getId();
+                } else {
+                    request.setAttribute("error", "Failed to create new category.");
+                    doGet(request, response);
+                    return;
+                }
+            } else {
+                categoryId = Integer.parseInt(categoryIdStr);
+            }
 
             Product product = new Product();
             product.setName(name);
@@ -69,13 +95,31 @@ public class AdminController extends HttpServlet {
             product.setCategoryId(categoryId);
 
             productService.createProduct(product);
+
         } else if ("updateProduct".equals(action)) {
             int productId = Integer.parseInt(request.getParameter("productId"));
             String name = request.getParameter("name");
             String description = request.getParameter("description");
             BigDecimal price = new BigDecimal(request.getParameter("price"));
             int stockQuantity = Integer.parseInt(request.getParameter("stockQuantity"));
-            int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+
+            String categoryIdStr = request.getParameter("categoryId");
+            int categoryId;
+
+            // Handle new category creation
+            if ("new".equals(categoryIdStr)) {
+                String newCategoryName = request.getParameter("newCategoryName");
+                Category newCategory = categoryService.createCategory(newCategoryName);
+                if (newCategory != null) {
+                    categoryId = newCategory.getId();
+                } else {
+                    request.setAttribute("error", "Failed to create new category.");
+                    doGet(request, response);
+                    return;
+                }
+            } else {
+                categoryId = Integer.parseInt(categoryIdStr);
+            }
 
             Product product = productService.getProductById(productId);
             if (product != null) {
@@ -86,9 +130,11 @@ public class AdminController extends HttpServlet {
                 product.setCategoryId(categoryId);
                 productService.updateProduct(product);
             }
+
         } else if ("deleteProduct".equals(action)) {
             int productId = Integer.parseInt(request.getParameter("productId"));
             productService.deleteProduct(productId);
+
         } else if ("updateUser".equals(action)) {
             int userId = Integer.parseInt(request.getParameter("userId"));
             String role = request.getParameter("role");
@@ -103,3 +149,4 @@ public class AdminController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/admin");
     }
 }
+
