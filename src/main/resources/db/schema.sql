@@ -3,7 +3,7 @@ CREATE TABLE users (
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    role ENUM('ADMIN', 'CUSTOMER') NOT NULL DEFAULT 'CUSTOMER',
+    role ENUM('ADMIN', 'CUSTOMER', 'WAREHOUSE_STAFF') NOT NULL DEFAULT 'CUSTOMER',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -59,3 +59,8 @@ CREATE TABLE order_items (
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
+
+INSERT INTO users(username, password, email, role) VALUES ('admin', 'admin', 'admin@mail.com', 'ADMIN');
+INSERT INTO users(username, password, email, role) VALUES ('warehouse', 'warehouse', 'warehouse@mail.com', 'WAREHOUSE_STAFF');
+INSERT INTO users(username, password, email, role) VALUES ('customer', 'customer', 'customer@mail.com', 'CUSTOMER');
+
