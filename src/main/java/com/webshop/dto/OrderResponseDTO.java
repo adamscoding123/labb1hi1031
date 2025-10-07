@@ -53,13 +53,4 @@ public class OrderResponseDTO {
 
     public List<OrderItemResponseDTO> getOrderItems() { return orderItems; }
     public void setOrderItems(List<OrderItemResponseDTO> orderItems) { this.orderItems = orderItems; }
-
-    // Business logic methods
-    public boolean canBeCancelled() {
-        return status == Order.OrderStatus.PENDING || status == Order.OrderStatus.CONFIRMED;
-    }
-
-    public boolean canBeShipped() {
-        return status == Order.OrderStatus.CONFIRMED;
-    }
 }

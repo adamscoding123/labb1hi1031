@@ -65,4 +65,8 @@ public class CartService {
         }
         return true;
     }
+
+    public BigDecimal getCartItemTotalPrice(CartItem cartItem) {
+        return cartItem.getTotalPrice();
+    }
 }

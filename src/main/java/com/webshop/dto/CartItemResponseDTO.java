@@ -35,11 +35,4 @@ public class CartItemResponseDTO {
 
     public LocalDateTime getAddedAt() { return addedAt; }
     public void setAddedAt(LocalDateTime addedAt) { this.addedAt = addedAt; }
-
-    public BigDecimal getTotalPrice() {
-        if (product != null && product.getPrice() != null) {
-            return product.getPrice().multiply(BigDecimal.valueOf(quantity));
-        }
-        return BigDecimal.ZERO;
-    }
 }

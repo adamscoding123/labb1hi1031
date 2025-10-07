@@ -40,8 +40,7 @@ public class OrderService {
                         0, // orderId will be set later
                         cartItem.getProduct().getId(),
                         cartItem.getQuantity(),
-                        cartItem.getProduct().getPrice()
-                ))
+                        cartItem.getProduct().getPrice()))
                 .collect(Collectors.toList());
 
         // Create order in transaction
@@ -77,5 +76,9 @@ public class OrderService {
 
     public boolean canOrderBeCancelled(Order order) {
         return order != null && order.canBeCancelled();
+    }
+
+    public BigDecimal getOrderItemTotalPrice(OrderItem orderItem) {
+        return orderItem.getTotalPrice();
     }
 }

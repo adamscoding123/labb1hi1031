@@ -40,17 +40,4 @@ public class UserResponseDTO {
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
-
-    // Business logic methods
-    public boolean isAdmin() {
-        return User.UserRole.ADMIN.equals(this.role);
-    }
-
-    public boolean isWarehouseStaff() {
-        return User.UserRole.WAREHOUSE_STAFF.equals(this.role);
-    }
-
-    public boolean isCustomer() {
-        return User.UserRole.CUSTOMER.equals(this.role);
-    }
 }

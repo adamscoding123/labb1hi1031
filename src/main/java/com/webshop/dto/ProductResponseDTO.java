@@ -61,13 +61,4 @@ public class ProductResponseDTO {
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
-
-    // Business logic methods
-    public boolean isInStock() {
-        return stockQuantity > 0;
-    }
-
-    public boolean hasSufficientStock(int requestedQuantity) {
-        return stockQuantity >= requestedQuantity;
-    }
 }
