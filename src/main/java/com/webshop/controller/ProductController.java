@@ -2,6 +2,9 @@ package com.webshop.controller;
 
 import com.webshop.model.Product;
 import com.webshop.service.ProductService;
+import com.webshop.dto.ProductResponseDTO;
+import com.webshop.dto.DTOMapper;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +24,8 @@ public class ProductController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Product> products = productService.getAllProducts();
-        request.setAttribute("products", products);
+        List<ProductResponseDTO> productDTOs = DTOMapper.toProductResponseDTOs(products);
+        request.setAttribute("products", productDTOs);
         request.getRequestDispatcher("/views/products.jsp").forward(request, response);
     }
 }

@@ -1,6 +1,8 @@
 package com.webshop.controller;
 
 import com.webshop.service.CartService;
+import com.webshop.dto.CartItemResponseDTO;
+import com.webshop.dto.DTOMapper;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +29,8 @@ public class CartController extends HttpServlet {
             return;
         }
 
-        request.setAttribute("cartItems", cartService.getCartItems(userId));
+        List<CartItemResponseDTO> cartItemDTOs = DTOMapper.toCartItemResponseDTOs(cartService.getCartItems(userId));
+        request.setAttribute("cartItems", cartItemDTOs);
         request.setAttribute("cartTotal", cartService.calculateCartTotal(userId));
         request.getRequestDispatcher("/views/cart.jsp").forward(request, response);
     }

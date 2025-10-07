@@ -6,6 +6,10 @@ import com.webshop.model.Category;
 import com.webshop.service.ProductService;
 import com.webshop.service.UserService;
 import com.webshop.service.CategoryService;
+import com.webshop.dto.ProductResponseDTO;
+import com.webshop.dto.UserResponseDTO;
+import com.webshop.dto.CategoryResponseDTO;
+import com.webshop.dto.DTOMapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -44,9 +48,13 @@ public class AdminController extends HttpServlet {
         List<User> users = userService.getAllUsers();
         List<Category> categories = categoryService.getAllCategories();
 
-        request.setAttribute("products", products);
-        request.setAttribute("users", users);
-        request.setAttribute("categories", categories); // pass categories to JSP
+        List<ProductResponseDTO> productDTOs = DTOMapper.toProductResponseDTOs(products);
+        List<UserResponseDTO> userDTOs = DTOMapper.toUserResponseDTOs(users);
+        List<CategoryResponseDTO> categoryDTOs = DTOMapper.toCategoryResponseDTOs(categories);
+
+        request.setAttribute("products", productDTOs);
+        request.setAttribute("users", userDTOs);
+        request.setAttribute("categories", categoryDTOs); // pass categories to JSP
         request.getRequestDispatcher("/views/admin.jsp").forward(request, response);
     }
 

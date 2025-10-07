@@ -3,6 +3,8 @@ package com.webshop.controller;
 import com.webshop.model.Order;
 import com.webshop.model.User;
 import com.webshop.service.OrderService;
+import com.webshop.dto.OrderResponseDTO;
+import com.webshop.dto.DTOMapper;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,7 +40,8 @@ public class OrderController extends HttpServlet {
             orders = orderService.getOrdersByUserId(userId);
         }
 
-        request.setAttribute("orders", orders);
+        List<OrderResponseDTO> orderDTOs = DTOMapper.toOrderResponseDTOs(orders);
+        request.setAttribute("orders", orderDTOs);
         request.getRequestDispatcher("/views/orders.jsp").forward(request, response);
     }
 
